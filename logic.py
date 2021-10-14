@@ -113,6 +113,38 @@ class chess_plane():
                                         x_co1=x_axis
                                         break
                             
+                            if y_co2>0:
+                                fla=False
+                                for t in range(y_co2):
+                                    if self.board0_2d[t][j]==1:
+                                        move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
+                                        fla=True
+                                if fla:return_arr.append(move)
+                                
+                            if y_co1<9:
+                                for t in range(y_co1+1,10):
+                                    if self.board0_2d[t][j]==1:
+                                        move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
+                                        return_arr.append(move)
+                                        break
+                                    
+                            if x_co2>0:
+                                fla=False
+                                for t in range(x_co2):
+                                    if self.board0_2d[i][t]==1:
+                                        move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
+                                        fla=True
+                                if fla:return_arr.append(move)
+                                
+                            if x_co1<8:
+                                for t in range(x_co1+1,9):
+                                    if self.board0_2d[t][j]==1:
+                                        move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
+                                        return_arr.append(move)
+                                        break
+                            
+                                        
+                                        
                                 
                             for t in range(y_co2,i):
                                 move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
