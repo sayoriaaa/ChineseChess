@@ -188,6 +188,70 @@ class chess_plane():
                                 move=self.x[j]+self.y[i]+self.x[t[1]]+self.y[t[0]]
                                 return_arr.append(move)
                                 
+                        if k==2:#象的情况
+                            if i+1>0 and j-1>0 and self.board_2d[i+1][j-1]==0 and self.board1_2d[i+2][j-2]==0:
+                                move=self.x[j]+self.y[i]+self.x[j-2]+self.y[i+2]
+                                return_arr.append(move)
+                            if i+1>0 and j+1>0 and self.board_2d[i+1][j+1]==0 and self.board1_2d[i+2][j+2]==0:
+                                move=self.x[j]+self.y[i]+self.x[j+2]+self.y[i+2]
+                                return_arr.append(move)
+                            if i-1>0 and j+1>0 and self.board_2d[i-1][j+1]==0 and self.board1_2d[i-2][j+2]==0:
+                                move=self.x[j]+self.y[i]+self.x[j+2]+self.y[i-2]
+                                return_arr.append(move)
+                            if i-1>0 and j-1>0 and self.board_2d[i-1][j-1]==0 and self.board1_2d[i-2][j-2]==0:
+                                move=self.x[j]+self.y[i]+self.x[j-2]+self.y[i-2]
+                                return_arr.append(move)
+                                
+                        if k==3:#士的情况 0<i<3,2<j<6
+                            if i+1<3 and j+1<6 and self.board1_2d[i+1][j+1]==0:
+                                move=self.x[j]+self.y[i]+self.x[j+1]+self.y[i+1]
+                                return_arr.append(move)
+                            if i+1<3 and j-1>2 and self.board1_2d[i+1][j-1]==0:
+                                move=self.x[j]+self.y[i]+self.x[j-1]+self.y[i+1]
+                                return_arr.append(move)
+                            if i-1>0 and j+1<6 and self.board1_2d[i-1][j+1]==0:
+                                move=self.x[j]+self.y[i]+self.x[j+1]+self.y[i-1]
+                                return_arr.append(move)
+                            if i-1>0 and j-1>2 and self.board1_2d[i-1][j-1]==0:
+                                move=self.x[j]+self.y[i]+self.x[j-1]+self.y[i-1]
+                                return_arr.append(move)
+                                
+                        if k==4:#帅的情况
+                            if j+1<6 and self.board1_2d[i][j+1]==0:
+                                move=self.x[j]+self.y[i]+self.x[j+1]+self.y[i]
+                                return_arr.append(move)
+                            if i+1<3 and self.board1_2d[i+1][j]==0:
+                                move=self.x[j]+self.y[i]+self.x[j]+self.y[i+1]
+                                return_arr.append(move)
+                            if i-1>0 and self.board1_2d[i-1][j]==0:
+                                move=self.x[j]+self.y[i]+self.x[j]+self.y[i-1]
+                                return_arr.append(move)
+                            if j-1>2 and self.board1_2d[i][j-1]==0:
+                                move=self.x[j]+self.y[i]+self.x[j-1]+self.y[i]
+                                return_arr.append(move)
+                                
+                        if k==6:#兵的情况
+                            if i<5:#过河前
+                                if self.board1_2d[i+1][j]==0:
+                                    move=self.x[j]+self.y[i]+self.x[j]+self.y[i+1]
+                                    return_arr.append(move)
+                            if i>4:
+                                if i+1<10 and self.board1_2d[i+1][j]==0:
+                                    move=self.x[j]+self.y[i]+self.x[j]+self.y[i+1]
+                                    return_arr.append(move)
+                                if j-1>0 and self.board1_2d[i][j-1]==0:
+                                    move=self.x[j]+self.y[i]+self.x[j-1]+self.y[i]
+                                    return_arr.append(move)
+                                if j+1<9 and self.board1_2d[i][j+1]==0:
+                                    move=self.x[j]+self.y[i]+self.x[j+1]+self.y[i]
+                                    return_arr.append(move)
+                                    
+                                
+                                
+                                
+                            
+                        
+                                
                                 
                             
                                 
