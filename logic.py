@@ -159,6 +159,37 @@ class chess_plane():
                             for t in range(j+1,x_co1):
                                 move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
                                 return_arr.append(move)
+                        
+                        if k==1:#马的情况
+                            runable=[]
+                            if j!=8 and self.board_2d[i][j+1]==0:
+                                runable.append((2,1))
+                                runable.append((2,-1))
+                            if j!=0 and self.board_2d[i][j-1]==0:
+                                runable.append((-2,1))
+                                runable.append((-2,-1))
+                            if i!=9 and self.board_2d[i+1][j]==0:
+                                runable.append((1,2))
+                                runable.append((-1,2))
+                            if i!=0 and self.board_2d[i-1][j]==0:
+                                runable.append((1,-2))#这里不小心存在两种坐标表示
+                                runable.append((-1,-2))
+                            choosable=[(i+a,j+b) for (b,a) in runable]
+                            discard=[]
+
+                            for q in choosable:
+                                if q[0]<0 or q[1]<0: 
+                                    discard.append(q)
+                                    
+                            for q in discard:
+                                choosable.remove(q)
+                                
+                            for t in choosable:
+                                move=self.x[j]+self.y[i]+self.x[t[1]]+self.y[t[0]]
+                                return_arr.append(move)
+                                
+                                
+                            
                                 
                                 
                                 
