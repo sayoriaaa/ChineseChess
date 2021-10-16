@@ -92,6 +92,7 @@ def callback(event):
                     
                 board.board_2d[y][x]=1#不写也可以
                 board.board1_2d[y][x]=1
+                player=0#测试用！！
             first_click=True#重置
         if player==0:
             options=board.valid_moves_0()
@@ -113,33 +114,15 @@ def callback(event):
                     
                 board.board_2d[y][x]=1#不写也可以
                 board.board0_2d[y][x]=1
+                player=1#测试用！！
         first_click=True#重置
         
         print(player)    
-        if player==1:   player=0#测试用！！
-        else:   player=1#测试用！！
+
     drawbroad()
     loadchess()
                 
-                    
-                    
-                
-                    
-                            
-                    
-        
-                
-        
-            
-        
-
-            
-            
-                
-                
-            
-            
-    
+                                   
     
 #------------------------------------------------------------------------------   
 drawbroad()

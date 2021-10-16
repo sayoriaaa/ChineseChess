@@ -59,24 +59,24 @@ class chess_plane():
                             for y_axis in range(10):#获得四周最近棋子的坐标
                                 if y_axis<i:
                                     if self.board_2d[y_axis][j]==1:
-                                        y_co2=y_axis+1
+                                        y_co2=y_axis
                                 if y_axis>i:
                                     if self.board_2d[y_axis][j]==1:
-                                        y_co1=y_axis
+                                        y_co1=y_axis+1
                                         break
                             for x_axis in range(9):#获得四周最近棋子的坐标
                                 if x_axis<j:
                                     if self.board_2d[i][x_axis]==1:
 
-                                        x_co2=x_axis+1
+                                        x_co2=x_axis
                                 if x_axis>j:
                                     if self.board_2d[i][x_axis]==1:
-                                        x_co1=x_axis
+                                        x_co1=x_axis+1
                                         break
-                            if self.board0_2d[y_co2][j]==1: y_co2-=1
-                            if y_co1!=10 and self.board0_2d[y_co1][j]==1: y_co1+=1
-                            if self.board0_2d[i][x_co2]==1: x_co2-=1
-                            if x_co1!=9 and self.board0_2d[i][x_co1]==1: x_co1+=1#防止越界,判断是边界否可吃
+                            if self.board1_2d[y_co2][j]==1: y_co2+=1
+                            if self.board1_2d[y_co1-1][j]==1: y_co1-=1
+                            if self.board1_2d[i][x_co2]==1: x_co2+=1
+                            if self.board1_2d[i][x_co1-1]==1: x_co1-=1#判断是边界否可吃
                                 
                             for t in range(y_co2,i):
                                 move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
@@ -92,74 +92,68 @@ class chess_plane():
                                 move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
                                 return_arr.append(move)
                         if k==5:#炮的情况，相当于车的情况减去边界检测加上越子检测
-                            y_co1=10
-                            y_co2=0
-                            x_co1=9
-                            x_co2=0
-                            for y_axis in range(10):#获得四周最近棋子的坐标
-                                if y_axis<i:
-                                    if self.board_2d[y_axis][j]==1:
-                                        y_co2=y_axis+1
-                                elif y_axis>i:
-                                    if self.board_2d[y_axis][j]==1:
-                                        y_co1=y_axis
-                                        break
-                            for x_axis in range(9):#获得四周最近棋子的坐标
-                                if x_axis<j:
-                                    if self.board_2d[i][x_axis]==1:
-                                        x_co2=x_axis+1
-                                if x_axis>j:
-                                    if self.board_2d[i][x_axis]==1:
-                                        x_co1=x_axis
-                                        break
+                            left_x=False
+                            right_x=False
+                            up_y=False
+                            down_y=False
                             
-                            if y_co2>0:
-                                fla=False
-                                for t in range(y_co2-1):
-                                    if self.board0_2d[t][j]==1:
-                                        move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
-                                        fla=True
-                                if fla:return_arr.append(move)
-                                
-                            if y_co1<9:
-                                for t in range(y_co1+1,10):
-                                    if self.board0_2d[t][j]==1:
-                                        move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
-                                        return_arr.append(move)
-                                        break
-                                    
-                            if x_co2>0:
-                                fla=False
-                                for t in range(x_co2-1):#如果不减去一相当于用自己创造的右边棋子打自己，减一相当于还原自己，前面有+1
+                            edge=-1
+                            for t in range(j-1,-1,-1):
+                                if self.board_2d[i][t]==1 and left_x==False:
+                                    edge=t
+                                    left_x=True
+                                elif left_x and self.board_2d[i][t]==1:
                                     if self.board0_2d[i][t]==1:
                                         move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
-                                        fla=True
-                                if fla:return_arr.append(move)
+                                        return_arr.append(move)
+                                    break
+                            for fk in range(edge+1,j):
+                                move=self.x[j]+self.y[i]+self.x[fk]+self.y[i]
+                                return_arr.append(move)
                                 
-                            if x_co1<8:
-                                for t in range(x_co1+1,9):
-                                    if self.board0_2d[t][j]==1:
+                            edge=8
+                            for t in range(j+1,9):
+                                if self.board_2d[i][t]==1 and not right_x:
+                                    edge=t
+                                    right_x=True
+                                elif right_x and self.board_2d[i][t]==1:
+                                    if self.board0_2d[i][t]==1:
                                         move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
                                         return_arr.append(move)
-                                        break
+                                    break
+                            for fk in range(j+1,edge+1):#操这里迭代器居然用了k，代码不规范，debug两行泪
+                                move=self.x[j]+self.y[i]+self.x[fk]+self.y[i]
+                                return_arr.append(move)
                             
-                                        
-                                        
-                                
-                            for t in range(y_co2,i):
-                                move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
+                            edge=-1
+                            for t in range(i-1,-1,-1):
+                                if self.board_2d[t][j]==1 and not down_y:
+                                    edge=t
+                                    down_y=True
+                                elif down_y and self.board_2d[t][j]==1:
+                                    if self.board0_2d[t][j]==1:
+                                        move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
+                                        return_arr.append(move)
+                                    break
+                            for fk in range(edge+1,i):
+                                move=self.x[j]+self.y[i]+self.x[j]+self.y[fk]
                                 return_arr.append(move)
-                            for t in range(i+1,y_co1):#不能把自己也包括了
-                                move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
+                            
+                            edge=9
+                            for t in range(i+1,10):
+                                if self.board_2d[t][j]==1 and up_y==False:
+                                    edge=t
+                                    up_y=True
+                                elif up_y and self.board_2d[t][j]==1:
+                                    if self.board0_2d[t][j]==1:
+                                        move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
+                                        return_arr.append(move)
+                                    break
+                            for fk in range(i+1,edge+1):
+                                move=self.x[j]+self.y[i]+self.x[j]+self.y[fk]
                                 return_arr.append(move)
-
-                            for t in range(x_co2,j):
-                                move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
-                                return_arr.append(move)
-                            for t in range(j+1,x_co1):
-                                move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
-                                return_arr.append(move)
-                        
+                            
+                       
                         if k==1:#马的情况
                             runable=[]
                             if j!=8 and self.board_2d[i][j+1]==0:
@@ -178,7 +172,7 @@ class chess_plane():
                             discard=[]
 
                             for q in choosable:
-                                if q[0]<0 or q[1]<0: 
+                                if q[0]<0 or q[1]<0 or q[0]>9 or q[1]>8 or self.board1_2d[q[0]][q[1]]==1: 
                                     discard.append(q)
                                     
                             for q in discard:
@@ -263,24 +257,24 @@ class chess_plane():
                             for y_axis in range(10):#获得四周最近棋子的坐标
                                 if y_axis<i:
                                     if self.board_2d[y_axis][j]==1:
-                                        y_co2=y_axis+1
+                                        y_co2=y_axis
                                 if y_axis>i:
                                     if self.board_2d[y_axis][j]==1:
-                                        y_co1=y_axis
+                                        y_co1=y_axis+1
                                         break
                             for x_axis in range(9):#获得四周最近棋子的坐标
                                 if x_axis<j:
                                     if self.board_2d[i][x_axis]==1:
 
-                                        x_co2=x_axis+1
+                                        x_co2=x_axis
                                 if x_axis>j:
                                     if self.board_2d[i][x_axis]==1:
-                                        x_co1=x_axis
+                                        x_co1=x_axis+1
                                         break
-                            if self.board1_2d[y_co2][j]==1: y_co2-=1
-                            if y_co1!=10 and self.board1_2d[y_co1][j]==1: y_co1+=1
-                            if self.board1_2d[i][x_co2]==1: x_co2-=1
-                            if x_co1!=9 and self.board1_2d[i][x_co1]==1: x_co1+=1#防止越界,判断是边界否可吃
+                            if self.board0_2d[y_co2][j]==1: y_co2+=1
+                            if self.board0_2d[y_co1-1][j]==1: y_co1-=1
+                            if self.board0_2d[i][x_co2]==1: x_co2+=1
+                            if self.board0_2d[i][x_co1-1]==1: x_co1-=1#判断是边界否可吃
                                 
                             for t in range(y_co2,i):
                                 move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
@@ -296,72 +290,65 @@ class chess_plane():
                                 move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
                                 return_arr.append(move)
                         if k==12:#炮的情况，相当于车的情况减去边界检测加上越子检测
-                            y_co1=10
-                            y_co2=0
-                            x_co1=9
-                            x_co2=0
-                            for y_axis in range(10):#获得四周最近棋子的坐标
-                                if y_axis<i:
-                                    if self.board_2d[y_axis][j]==1:
-                                        y_co2=y_axis+1
-                                elif y_axis>i:
-                                    if self.board_2d[y_axis][j]==1:
-                                        y_co1=y_axis
-                                        break
-                            for x_axis in range(9):#获得四周最近棋子的坐标
-                                if x_axis<j:
-                                    if self.board_2d[i][x_axis]==1:
-                                        x_co2=x_axis+1
-                                if x_axis>j:
-                                    if self.board_2d[i][x_axis]==1:
-                                        x_co1=x_axis
-                                        break
+                            left_x=False
+                            right_x=False
+                            up_y=False
+                            down_y=False
                             
-                            if y_co2>0:
-                                fla=False
-                                for t in range(y_co2-1):
-                                    if self.board1_2d[t][j]==1:
-                                        move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
-                                        fla=True
-                                if fla:return_arr.append(move)
-                                
-                            if y_co1<9:
-                                for t in range(y_co1+1,10):
-                                    if self.board1_2d[t][j]==1:
-                                        move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
-                                        return_arr.append(move)
-                                        break
-                                    
-                            if x_co2>0:
-                                fla=False
-                                for t in range(x_co2-1):
+                            edge=-1
+                            for t in range(j-1,-1,-1):
+                                if t!=-1 and self.board_2d[i][t]==1 and not left_x:
+                                    edge=t
+                                    left_x=True
+                                elif left_x and self.board_2d[i][t]==1:
                                     if self.board1_2d[i][t]==1:
                                         move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
-                                        fla=True
-                                if fla:return_arr.append(move)
+                                        return_arr.append(move)
+                                    break
+                            for fk in range(edge+1,j):
+                                move=self.x[j]+self.y[i]+self.x[fk]+self.y[i]
+                                return_arr.append(move)
                                 
-                            if x_co1<8:
-                                for t in range(x_co1+1,9):
-                                    if self.board1_2d[t][j]==1:
+                            edge=8
+                            for t in range(j+1,9):
+                                if t!=8 and self.board_2d[i][t]==1 and not right_x:
+                                    edge=t
+                                    right_x=True
+                                elif right_x and self.board_2d[i][t]==1:
+                                    if self.board1_2d[i][t]==1:
                                         move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
                                         return_arr.append(move)
-                                        break
+                                    break
+                            for fk in range(j+1,edge+1):
+                                move=self.x[j]+self.y[i]+self.x[fk]+self.y[i]
+                                return_arr.append(move)
                             
-                                        
-                                        
-                                
-                            for t in range(y_co2,i):
-                                move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
+                            edge=-1
+                            for t in range(i-1,-1,-1):
+                                if t!=-1 and self.board_2d[t][j]==1 and not down_y:
+                                    edge=t
+                                    down_y=True
+                                elif down_y and self.board_2d[t][j]==1:
+                                    if self.board1_2d[t][j]==1:
+                                        move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
+                                        return_arr.append(move)
+                                    break
+                            for fk in range(edge+1,i):
+                                move=self.x[j]+self.y[i]+self.x[j]+self.y[fk]
                                 return_arr.append(move)
-                            for t in range(i+1,y_co1):#不能把自己也包括了
-                                move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
-                                return_arr.append(move)
-
-                            for t in range(x_co2,j):
-                                move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
-                                return_arr.append(move)
-                            for t in range(j+1,x_co1):
-                                move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
+                            
+                            edge=9
+                            for t in range(i+1,10):
+                                if t!=9 and self.board_2d[i][t]==1 and not up_y:
+                                    edge=t
+                                    up_y=True
+                                elif up_y and self.board_2d[t][j]==1:
+                                    if self.board1_2d[t][j]==1:
+                                        move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
+                                        return_arr.append(move)
+                                    break
+                            for fk in range(i+1,edge+1):
+                                move=self.x[j]+self.y[i]+self.x[j]+self.y[fk]
                                 return_arr.append(move)
                         
                         if k==8:#马的情况
@@ -382,7 +369,7 @@ class chess_plane():
                             discard=[]
 
                             for q in choosable:
-                                if q[0]<0 or q[1]<0 or self.board0_2d[q[0]][q[1]]==1: 
+                                if q[0]<0 or q[1]<0 or q[0]>9 or q[1]>8 or self.board0_2d[q[0]][q[1]]==1: #v0.0.7 fix boundary bug
                                     discard.append(q)
                                     
                             for q in discard:
@@ -393,10 +380,10 @@ class chess_plane():
                                 return_arr.append(move)
                                 
                         if k==9:#象的情况4<i<10 i-1>5
-                            if i+1<10 and j-1>0 and self.board_2d[i+1][j-1]==0 and self.board0_2d[i+2][j-2]==0:
+                            if i+2<10 and j-1>0 and self.board_2d[i+1][j-1]==0 and self.board0_2d[i+2][j-2]==0:
                                 move=self.x[j]+self.y[i]+self.x[j-2]+self.y[i+2]
                                 return_arr.append(move)
-                            if i+1<10 and j+1<9 and self.board_2d[i+1][j+1]==0 and self.board0_2d[i+2][j+2]==0:
+                            if i+2<10 and j+1<9 and self.board_2d[i+1][j+1]==0 and self.board0_2d[i+2][j+2]==0:
                                 move=self.x[j]+self.y[i]+self.x[j+2]+self.y[i+2]
                                 return_arr.append(move)
                             if i-1>5 and j+1<9 and self.board_2d[i-1][j+1]==0 and self.board0_2d[i-2][j+2]==0:
@@ -451,19 +438,3 @@ class chess_plane():
                                     return_arr.append(move)                                
         return return_arr                                            
                                     
-                
-                
-                
-            
-
-    
-        
-        
-        
-        
-x=chess_plane()
-#print(x.board)
-#print("##########")
-#print(x.board_2d)
-print(x.valid_moves_1())
-print(x.valid_moves_0())
