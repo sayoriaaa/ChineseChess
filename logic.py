@@ -121,7 +121,7 @@ class chess_plane():
                                         move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
                                         return_arr.append(move)
                                     break
-                            for fk in range(j+1,edge+1):#操这里迭代器居然用了k，代码不规范，debug两行泪
+                            for fk in range(j+1,edge):#操这里迭代器居然用了k，代码不规范，debug两行泪
                                 move=self.x[j]+self.y[i]+self.x[fk]+self.y[i]
                                 return_arr.append(move)
                             
@@ -139,7 +139,7 @@ class chess_plane():
                                 move=self.x[j]+self.y[i]+self.x[j]+self.y[fk]
                                 return_arr.append(move)
                             
-                            edge=9
+                            edge=10
                             for t in range(i+1,10):
                                 if self.board_2d[t][j]==1 and up_y==False:
                                     edge=t
@@ -149,7 +149,7 @@ class chess_plane():
                                         move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
                                         return_arr.append(move)
                                     break
-                            for fk in range(i+1,edge+1):
+                            for fk in range(i+1,edge):
                                 move=self.x[j]+self.y[i]+self.x[j]+self.y[fk]
                                 return_arr.append(move)
                             
@@ -319,7 +319,7 @@ class chess_plane():
                                         move=self.x[j]+self.y[i]+self.x[t]+self.y[i]
                                         return_arr.append(move)
                                     break
-                            for fk in range(j+1,edge+1):
+                            for fk in range(j+1,edge):
                                 move=self.x[j]+self.y[i]+self.x[fk]+self.y[i]
                                 return_arr.append(move)
                             
@@ -337,7 +337,7 @@ class chess_plane():
                                 move=self.x[j]+self.y[i]+self.x[j]+self.y[fk]
                                 return_arr.append(move)
                             
-                            edge=9
+                            edge=10
                             for t in range(i+1,10):
                                 if t!=9 and self.board_2d[i][t]==1 and not up_y:
                                     edge=t
@@ -347,7 +347,7 @@ class chess_plane():
                                         move=self.x[j]+self.y[i]+self.x[j]+self.y[t]
                                         return_arr.append(move)
                                     break
-                            for fk in range(i+1,edge+1):
+                            for fk in range(i+1,edge):
                                 move=self.x[j]+self.y[i]+self.x[j]+self.y[fk]
                                 return_arr.append(move)
                         
