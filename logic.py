@@ -46,6 +46,15 @@ class chess_plane():
         
     def valid_moves_1(self):
         return_arr=[]
+        
+        checkmate=True
+        for i in range(10):
+            for j in range(9):
+                if self.board[4][i][j]==1:
+                    checkmate=False
+        if checkmate:
+            return return_arr
+                    
         for k in range(7):
             for i in range(10):
                 for j in range(9):
@@ -244,6 +253,15 @@ class chess_plane():
                                
     def valid_moves_0(self):
         return_arr=[]
+        
+        checkmate=True
+        for i in range(10):
+            for j in range(9):
+                if self.board[11][i][j]==1:
+                    checkmate=False
+        if checkmate:
+            return return_arr
+         
         for k in range(7,14):
             for i in range(10):
                 for j in range(9):
